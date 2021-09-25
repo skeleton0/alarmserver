@@ -30,7 +30,7 @@ class RequestHandler(socketserver.BaseRequestHandler):
 class Server(threading.Thread):
     def __init__(self):
         super().__init__()
-        self.server = socketserver.TCPServer(("localhost", 8080), RequestHandler)
+        self.server = socketserver.TCPServer(("0.0.0.0", 8080), RequestHandler)
         
     def run(self):
         self.server.serve_forever()
