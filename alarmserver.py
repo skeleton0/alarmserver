@@ -5,6 +5,7 @@ import threading
 import socket
 import socketserver
 import time
+import signal
 
 import RPi.GPIO as GPIO
     
@@ -65,10 +66,17 @@ if __name__ == "__main__":
     channel = 11
     GPIO.setmode(GPIO.BOARD)
     GPIO.setup(channel, GPIO.OUT, initial=GPIO.LOW)
+    
     logging.basicConfig(filename="log", format="%(asctime)s %(levelname)s: %(message)s", 
             datefmt="%Y-%m-%d %H:%M:%S", level=logging.DEBUG)
+
+    def handler(signal, frame):
+        raise KeyboardInterrupt
+    signal.signal(signal.SIGTERM, handler)
+
     server = Server()
     server.start()
+
     try:
         logging.info("Server started")
         while True:
