@@ -62,6 +62,9 @@ def sound_alarm(channel, duration=30, frequency=2, duty_cycle=0.5):
         time.sleep(off)
 
 if __name__ == "__main__":
+    channel = 11
+    GPIO.setmode(GPIO.BOARD)
+    GPIO.setup(channel, GPIO.OUT, initial=GPIO.LOW)
     logging.basicConfig(filename="log", format="%(asctime)s %(levelname)s: %(message)s", 
             datefmt="%Y-%m-%d %H:%M:%S", level=logging.DEBUG)
     server = Server()
@@ -70,7 +73,7 @@ if __name__ == "__main__":
         logging.info("Server started")
         while True:
             alarm.wait()
-            sound_alarm(channel=11, duration=5)
+            sound_alarm(channel)
             alarm.clear()
     except KeyboardInterrupt:
         server.shutdown() 
