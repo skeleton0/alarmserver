@@ -84,6 +84,9 @@ if __name__ == "__main__":
             sound_alarm(channel)
             alarm.clear()
     except KeyboardInterrupt:
-        server.shutdown() 
-        server.join()
-        logging.info("Server shutdown")
+        pass
+
+    server.shutdown() 
+    server.join()
+    GPIO.cleanup()
+    logging.info("Server shutdown")
