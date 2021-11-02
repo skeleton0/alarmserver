@@ -19,8 +19,13 @@ class RequestHandler(socketserver.BaseRequestHandler):
         except socket.timeout:
             data = None
 
-        if data == b'alarm':
+        data = data.decode().split(',')
+        action = data[0]
+        battery_voltage = float(data[1])
+
+        if action == 'alarm':
             logging.info(f"Received valid alarm from {self.client_address[0]}")
+            logging.info(f"Battery voltage of client device is {battery_voltage:.3}V")
             if alarm.is_set():
                 logging.info("Alarm already in progress")
             else:
@@ -40,7 +45,7 @@ class Server(threading.Thread):
         self.server.shutdown()
         self.server.server_close()
 
-def sound_alarm(channel, duration=30, frequency=2, duty_cycle=0.5):
+def sound_alarm(channel, duration=10, frequency=2, duty_cycle=0.5):
     """Sounds the an alarm connected to the raspberry pi's GPIO
 
     channel: The GPIO channel that the buzzer is connected to
